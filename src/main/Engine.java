@@ -1,8 +1,17 @@
 package main;
 
+import java.io.File;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
+
+import javax.xml.bind.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import com.sun.org.apache.xml.internal.serializer.ElemDesc;
+import com.sun.xml.internal.txw2.Document;
 
 // generic object ,everything inherits from it.
 class ZorkObject {
@@ -187,6 +196,35 @@ class ZorkCreature extends ZorkObject {
 }
 
 public class Engine {
+	Scanner source = new Scanner(System.in);
+	public String userInput = "";
+
+	public HashMap<String, ZorkItem> Items = new HashMap<>();
+	public HashMap<String, ZorkRoom> Rooms = new HashMap<>();
+	public HashMap<String, ZorkContainer> Containers = new HashMap<>();
+	public HashMap<String, ZorkCreature> Creatures = new HashMap<>();
+	public HashMap<String, ZorkObject> Objects = new HashMap<>();
+	public HashMap<String, String> Inventory = new HashMap<>();
+	public HashMap<String, String> ObjectLookup = new HashMap<>();
+	public String currentRoom;
+	public File file;
+
+	public Engine(String filename) {
+		int i, j, k, l, x, y, z;
+		file = new File(filename);
+		if (!file.canRead()) {
+			System.out.println("error opening file... exiting");
+			return;
+		}
+		
+		try {
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Document doc= builder.parse(file);
+			Element rootElement = doc.getDocumentElement();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	public static void main(String[] args) {
 
