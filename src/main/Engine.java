@@ -10,6 +10,9 @@ import javax.xml.bind.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 import com.sun.xml.internal.txw2.Document;
 
@@ -216,11 +219,36 @@ public class Engine {
 			System.out.println("error opening file... exiting");
 			return;
 		}
-		
+
 		try {
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document doc= builder.parse(file);
-			Element rootElement = doc.getDocumentElement();
+			org.w3c.dom.Document doc = builder.parse(file);
+			org.w3c.dom.Element rootElement = doc.getDocumentElement();
+
+			NodeList nodes = rootElement.getChildNodes();
+			for (k = 0; k < nodes.getLength(); k++) {
+				Node node = nodes.item(k);
+				org.w3c.dom.Element element;
+				if (node instanceof org.w3c.dom.Element) {
+					element = (org.w3c.dom.Element) node;
+					String tagType = element.getTagName();
+
+					// if its a room
+					if (tagType.equals("room")) {
+						ZorkRoom tempRoom = new ZorkRoom();
+						
+						//getting all possible attributes
+						NodeList name=element.getElementsByTagName("name");
+						tempRoom.name= getString((org.w3c.dom.Element) name.item(0));
+						NodeList type= element.getElementsByTagName("type");
+						
+						if(type.getLength()>0){
+							tempRoom.type=
+						}
+					}
+				}
+
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
